@@ -1,15 +1,17 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>El Juego de Adakademy - Torneo de Robótica</title>
-    <style>
+    {% load static %}
+  <style>
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background: linear-gradient(135deg, #0a1f3a, #1e3c72, #2a5298, #4a76b0);
             color: white;
             min-height: 100vh;
         }
@@ -20,56 +22,172 @@
         }
         header {
             text-align: center;
-            padding: 20px 0;
-            background: rgba(0,0,0,0.7);
-            border-radius: 10px;
+            padding: 40px 0;
+            background: linear-gradient(135deg, rgba(30, 60, 114, 0.9), rgba(42, 82, 152, 0.9));
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #7cff79, #50e34c, #7cff79);
+            box-shadow: 0 0 10px rgba(124, 255, 121, 0.5);
+        }
+        .logo {
+            max-width: 280px;
+            height: auto;
             margin-bottom: 20px;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
         }
         nav {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            margin: 20px 0;
+            gap: 25px;
+            margin: 30px 0;
         }
         nav a {
             color: white;
             text-decoration: none;
-            padding: 10px 20px;
-            border: 2px solid white;
-            border-radius: 5px;
-            transition: all 0.3s;
+            padding: 15px 30px;
+            border: 2px solid rgba(124, 255, 121, 0.3);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, rgba(30, 60, 114, 0.8), rgba(42, 82, 152, 0.8));
+            font-weight: bold;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(124, 255, 121, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        nav a:hover::before {
+            left: 100%;
         }
         nav a:hover {
-            background: white;
-            color: #1a2a6c;
+            background: linear-gradient(135deg, rgba(30, 60, 114, 0.9), rgba(42, 82, 152, 0.9));
+            border-color: #7cff79;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(124, 255, 121, 0.3);
         }
         .card {
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
+            background: linear-gradient(135deg, rgba(30, 60, 114, 0.85), rgba(42, 82, 152, 0.85));
+            border-radius: 12px;
+            padding: 30px;
+            margin: 25px 0;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(124, 255, 121, 0.2);
             backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #7cff79, #50e34c);
         }
         button {
-            background: #fdbb2d;
-            color: #1a2a6c;
+            background: linear-gradient(135deg, #4a76b0, #2a5298);
+            color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            padding: 15px 30px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(124, 255, 121, 0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        button:hover::after {
+            opacity: 1;
         }
         button:hover {
-            background: #ffcc44;
-            transform: scale(1.05);
+            background: linear-gradient(135deg, #5a86c0, #3a62a8);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(124, 255, 121, 0.2);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        h2 {
+            position: relative;
+            display: inline-block;
+        }
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, #7cff79, #50e34c);
+        }
+        p {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+            font-size: 1.1em;
+        }
+        header p {
+            font-size: 1.2em;
+            margin-top: 10px;
+            color: rgba(255, 255, 255, 0.95);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        /* Efectos de partículas verdes sutiles */
+        .container::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(124, 255, 121, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(124, 255, 121, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(124, 255, 121, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🎮 El Juego de Adakademy 🎮</h1>
+            <!-- Logo de Adakademy - Reemplaza la ruta con la de tu imagen -->
+            <img src="{% static 'img/logo-adakademy.png' %}" alt="Logo Adakademy" class="logo">
             <p>Torneo de Robótica - Competencia de ingenio, precisión y velocidad</p>
         </header>
         
