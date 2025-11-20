@@ -123,6 +123,68 @@ def resultados_sorteo(request):
         Partido.objects.filter(fase='SEMIFINAL').count() == 0 and
         Partido.objects.filter(fase='GRUPOS', ganador__isnull=False).count() >= 6  # Al menos 6 partidos jugados
     )
+
+    #Debug de simifinales####
+    if request.method == 'POST':
+        # Verificar si es para generar semifinales
+        if 'generar_semifinales' in request.POST:
+            print("✅ Botón 'generar_semifinales' presionado")
+            
+            # Obtener los 4 equipos con más puntos
+            top_4 = Equipo.objects.order_by('-puntos')[:4]
+            
+            print(f"Top 4 equipos: {[equipo.nombre for equipo in top_4]}")
+
+            if len(top_4) != 4:
+                    messages.error(request, 'No hay suficientes equipos con puntos para generar semifinales.')
+                    return redirect('resultados_sorteo')
+            
+            # Crear partidos de semifinales
+            Partido.objects.filter(fase='SEMIFINAL').delete()  # Limpiar semifinales anteriores
+            
+            partido1 = Partido.objects.create(
+                equipo1=top_4[0],
+                equipo2=top_4[3],
+                fase='SEMIFINAL'
+            )
+            
+            partido2 = Partido.objects.create(
+                equipo1=top_4[1],
+                equipo2=top_4[2],
+                fase='SEMIFINAL'
+            )
+            
+            print(f"✅ Semifinales creadas: {partido1} y {partido2}")
+            messages.success(request, 'Semifinales generadas!')
+            return redirect('resultados_sorteo')
+
+        elif 'generar_final' in request.POST:
+            print("✅ Botón 'generar_final' presionado")
+            
+            # Obtener ganadores de semifinales
+            semifinales = Partido.objects.filter(fase='SEMIFINAL', ganador__isnull=False)
+            
+            print(f"Semifinales con ganador: {semifinales.count()}")
+            
+            if semifinales.count() != 2:
+                messages.error(request, 'Ambas semifinales deben tener un ganador definido para generar la final.')
+                return redirect('resultados_sorteo')
+            
+            ganadores = [partido.ganador for partido in semifinales]
+            print(f"Ganadores de semifinales: {[ganador.nombre for ganador in ganadores]}")
+            
+            # Crear partido final
+            Partido.objects.filter(fase='FINAL').delete()  # Limpiar final anterior
+            
+            partido_final = Partido.objects.create(
+                equipo1=ganadores[0],
+                equipo2=ganadores[1],
+                fase='FINAL'
+            )
+            
+            print(f"✅ Final creada: {partido_final}")
+            messages.success(request, '¡Final generada! Los dos mejores equipos se enfrentarán por el campeonato.')
+            return redirect('resultados_sorteo')
     
     # Verificar si se puede generar final
     puede_generar_final = (
