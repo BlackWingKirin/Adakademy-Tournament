@@ -1,0 +1,309 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <h2>🏆 Torneo - El Juego de Adakademy</h2>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="card" style="background: {% if message.tags == 'error' %}rgba(255,0,0,0.3){% else %}rgba(0,255,0,0.3){% endif %}; text-align: center;">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    <!-- Tabla de Posiciones -->
+    <div class="card">
+        <h3>📊 Tabla de Posiciones - Fase de Grupos</h3>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+            <thead>
+                <tr style="background: rgba(255,255,255,0.2);">
+                    <th style="padding: 12px; text-align: left;">Posición</th>
+                    <th style="padding: 12px; text-align: left;">Equipo</th>
+                    <th style="padding: 12px; text-align: center;">Puntos</th>
+                    <th style="padding: 12px; text-align: center;">Clasificación</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for equipo in equipos %}
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                    <td style="padding: 12px;">{{ forloop.counter }}</td>
+                    <td style="padding: 12px; font-weight: bold;">{{ equipo.nombre }}</td>
+                    <td style="padding: 12px; text-align: center;">{{ equipo.puntos }}</td>
+                    <td style="padding: 12px; text-align: center;">
+                        {% if forloop.counter <= 4 %}
+                            <span style="color: #4ecdc4; font-weight: bold;">✅ Clasificado</span>
+                        {% else %}
+                            <span style="color: #ff6b6b;">❌ Eliminado</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Fase de Grupos -->
+    <div class="card">
+        <h3>⚔️ Fase de Grupos - Todos contra Todos</h3>
+        {% if partidos_grupos %}
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 15px; margin-top: 15px;">
+            {% for partido in partidos_grupos %}
+            <div class="partido-card" style="background: {% if partido.ganador %}rgba(0,255,0,0.1){% else %}rgba(255,255,255,0.05){% endif %}; padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <strong style="font-size: 0.9em; color: #fdbb2d;">Partido {{ forloop.counter }}</strong>
+                    {% if partido.reto %}
+                    <span style="background: rgba(253, 187, 45, 0.3); padding: 4px 8px; border-radius: 4px; font-size: 0.8em;">
+                        {{ partido.reto.nombre }}
+                    </span>
+                    {% endif %}
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="text-align: center; flex: 1;">
+                        <div style="font-weight: bold;">{{ partido.equipo1 }}</div>
+                        {% if partido.estado == 'F' %}
+                        <div style="font-size: 1.5em; font-weight: bold; color: {% if partido.ganador == partido.equipo1 %}#4ecdc4{% else %}white{% endif %};">
+                            {{ partido.resultado_equipo1 }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div style="text-align: center; margin: 0 15px;">
+                        <div style="font-size: 1.2em; font-weight: bold;">VS</div>
+                        {% if partido.estado == 'F' %}
+                        <div style="font-size: 0.8em; color: #4ecdc4;">Finalizado</div>
+                        {% else %}
+                        <div style="font-size: 0.8em; color: #ff6b6b;">Pendiente</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div style="text-align: center; flex: 1;">
+                        <div style="font-weight: bold;">{{ partido.equipo2 }}</div>
+                        {% if partido.estado == 'F' %}
+                        <div style="font-size: 1.5em; font-weight: bold; color: {% if partido.ganador == partido.equipo2 %}#4ecdc4{% else %}white{% endif %};">
+                            {{ partido.resultado_equipo2 }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 5px; margin-top: 10px; justify-content: center;">
+                    {% if not partido.reto %}
+                    <a href="{% url 'ruleta' partido.id %}" style="display: inline-block; background: #fdbb2d; color: #1a2a6c; padding: 5px 10px; border-radius: 4px; text-decoration: none; font-size: 0.8em; font-weight: bold;">
+                        Asignar Reto
+                    </a>
+                    {% endif %}
+                    
+                    {% if partido.estado != 'F' %}
+                    <a href="{% url 'registrar_resultado' partido.id %}" style="display: inline-block; background: #4ecdc4; color: white; padding: 5px 10px; border-radius: 4px; text-decoration: none; font-size: 0.8em; font-weight: bold;">
+                        Registrar Resultado
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p style="text-align: center; padding: 20px;">No hay partidos de fase de grupos generados.</p>
+        {% endif %}
+    </div>
+
+    <!-- Semifinales -->
+    {% if partidos_semifinales %}
+    <div class="card">
+        <h3>🎯 Semifinales</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 15px; margin-top: 15px;">
+            {% for partido in partidos_semifinales %}
+            <div class="partido-card" style="background: rgba(78, 205, 196, 0.1); padding: 20px; border-radius: 8px; border: 2px solid #4ecdc4;">
+                <div style="text-align: center; margin-bottom: 15px;">
+                    <strong style="color: #4ecdc4; font-size: 1.1em;">Semifinal {{ forloop.counter }}</strong>
+                    {% if partido.reto %}
+                    <div style="background: rgba(253, 187, 45, 0.3); padding: 4px 8px; border-radius: 4px; font-size: 0.9em; margin-top: 5px;">
+                        {{ partido.reto.nombre }}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="text-align: center; flex: 1;">
+                        <div style="font-weight: bold; font-size: 1.1em;">{{ partido.equipo1 }}</div>
+                        {% if partido.estado == 'F' %}
+                        <div style="font-size: 1.8em; font-weight: bold; color: {% if partido.ganador == partido.equipo1 %}#4ecdc4{% else %}white{% endif %};">
+                            {{ partido.resultado_equipo1 }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div style="text-align: center; margin: 0 15px;">
+                        <div style="font-size: 1.5em; font-weight: bold;">VS</div>
+                        {% if partido.estado == 'F' %}
+                        <div style="font-size: 0.9em; color: #4ecdc4; font-weight: bold;">Finalizado</div>
+                        {% if partido.ganador %}
+                        <div style="font-size: 0.8em; margin-top: 5px;">Ganador: {{ partido.ganador }}</div>
+                        {% endif %}
+                        {% else %}
+                        <div style="font-size: 0.9em; color: #ff6b6b;">Pendiente</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div style="text-align: center; flex: 1;">
+                        <div style="font-weight: bold; font-size: 1.1em;">{{ partido.equipo2 }}</div>
+                        {% if partido.estado == 'F' %}
+                        <div style="font-size: 1.8em; font-weight: bold; color: {% if partido.ganador == partido.equipo2 %}#4ecdc4{% else %}white{% endif %};">
+                            {{ partido.resultado_equipo2 }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 5px; margin-top: 15px; justify-content: center;">
+                    {% if not partido.reto %}
+                    <a href="{% url 'ruleta' partido.id %}" style="display: inline-block; background: #fdbb2d; color: #1a2a6c; padding: 8px 15px; border-radius: 4px; text-decoration: none; font-weight: bold;">
+                        Asignar Reto
+                    </a>
+                    {% endif %}
+                    
+                    {% if partido.estado != 'F' %}
+                    <a href="{% url 'registrar_resultado' partido.id %}" style="display: inline-block; background: #4ecdc4; color: white; padding: 8px 15px; border-radius: 4px; text-decoration: none; font-weight: bold;">
+                        Registrar Resultado
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Final -->
+    {% if partido_final %}
+    <div class="card">
+        <h3>🏅 Final del Torneo</h3>
+        <div style="background: rgba(255, 215, 0, 0.1); padding: 25px; border-radius: 10px; border: 3px solid #ffd700; text-align: center;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="text-align: center; flex: 1;">
+                    <div style="font-weight: bold; font-size: 1.3em;">{{ partido_final.equipo1 }}</div>
+                    {% if partido_final.estado == 'F' %}
+                    <div style="font-size: 2em; font-weight: bold; color: {% if partido_final.ganador == partido_final.equipo1 %}#ffd700{% else %}white{% endif %};">
+                        {{ partido_final.resultado_equipo1 }}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div style="text-align: center; margin: 0 20px;">
+                    <div style="font-size: 2em; font-weight: bold;">🏆</div>
+                    <div style="font-size: 1.2em; font-weight: bold;">VS</div>
+                    {% if partido_final.estado == 'F' %}
+                    <div style="font-size: 1em; color: #ffd700; font-weight: bold;">CAMPEONATO</div>
+                    {% if partido_final.ganador %}
+                    <div style="font-size: 1.1em; margin-top: 10px; color: #ffd700; font-weight: bold;">
+                        🎉 CAMPEÓN: {{ partido_final.ganador }} 🎉
+                    </div>
+                    {% endif %}
+                    {% else %}
+                    <div style="font-size: 1em; color: #ff6b6b;">Por disputarse</div>
+                    {% endif %}
+                </div>
+                
+                <div style="text-align: center; flex: 1;">
+                    <div style="font-weight: bold; font-size: 1.3em;">{{ partido_final.equipo2 }}</div>
+                    {% if partido_final.estado == 'F' %}
+                    <div style="font-size: 2em; font-weight: bold; color: {% if partido_final.ganador == partido_final.equipo2 %}#ffd700{% else %}white{% endif %};">
+                        {{ partido_final.resultado_equipo2 }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div style="margin-top: 20px;">
+                {% if partido_final.reto %}
+                <div style="background: rgba(253, 187, 45, 0.3); padding: 8px 15px; border-radius: 6px; display: inline-block; margin-bottom: 10px;">
+                    <strong>Reto Final:</strong> {{ partido_final.reto.nombre }}
+                </div>
+                {% endif %}
+            </div>
+            
+            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 15px;">
+                {% if not partido_final.reto %}
+                <a href="{% url 'ruleta' partido_final.id %}" style="display: inline-block; background: #fdbb2d; color: #1a2a6c; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: bold;">
+                    Asignar Reto Final
+                </a>
+                {% endif %}
+                
+                {% if partido_final.estado != 'F' %}
+                <a href="{% url 'registrar_resultado' partido_final.id %}" style="display: inline-block; background: #ffd700; color: #1a2a6c; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: bold;">
+                    Registrar Resultado Final
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Botones de control -->
+    <div class="card" style="text-align: center;">
+        <h3>🚀 Control del Torneo</h3>
+        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 15px;">
+            {% if total_equipos == 5 and partidos_grupos.count == 0 %}
+            <form method="post" action="{% url 'sorteo' %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" name="realizar_sorteo" style="background: #fdbb2d; color: #1a2a6c; padding: 12px 25px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
+                    Generar Fase de Grupos
+                </button>
+            </form>
+            {% endif %}
+            
+            {% if puede_generar_semifinales %}
+            <form method="post" action="{% url 'resultados_sorteo' %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" name="generar_semifinales" style="background: #4ecdc4; color: white; padding: 12px 25px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
+                    Generar Semifinales
+                </button>
+            </form>
+            {% endif %}
+            
+            {% if puede_generar_final %}
+            <form method="post" action="{% url 'resultados_sorteo' %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" name="generar_final" style="background: #ff6b6b; color: white; padding: 12px 25px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
+                    Generar Final
+                </button>
+            </form>
+            {% endif %}
+            
+            <a href="{% url 'sorteo' %}" style="display: inline-block; background: #45b7d1; color: white; padding: 12px 25px; border-radius: 6px; text-decoration: none; font-weight: bold;">
+                Gestionar Equipos
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+.partido-card:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+th {
+    background: rgba(255,255,255,0.2);
+    font-weight: bold;
+}
+
+tr:hover {
+    background: rgba(255,255,255,0.05);
+}
+</style>
+{% endblock %}

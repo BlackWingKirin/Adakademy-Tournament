@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <h2>Ruleta de Retos</h2>
+    <h3>Partido: {{ partido.equipo1 }} vs {{ partido.equipo2 }}</h3>
+    
+    <div style="text-align: center;">
+        <div style="width: 300px; height: 300px; margin: 0 auto; position: relative; border-radius: 50%; background: conic-gradient(#ff6b6b 0% 33%, #4ecdc4 33% 66%, #45b7d1 66% 100%);">
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50px; height: 50px; background: white; border-radius: 50%;"></div>
+            <div style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); color: white; font-weight: bold;">Puente</div>
+            <div style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); color: white; font-weight: bold;">Serpiente</div>
+            <div style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); color: white; font-weight: bold;">Guardián</div>
+        </div>
+        
+        <div style="position: relative; margin: 20px auto; width: 300px;">
+            <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 20px solid white;"></div>
+        </div>
+        
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" style="font-size: 1.2em; padding: 15px 30px;">
+                Girar Ruleta y Asignar Reto
+            </button>
+        </form>
+    </div>
+    
+    <div class="card" style="margin-top: 20px; background: rgba(255,255,255,0.1);">
+        <h3>Retos Disponibles:</h3>
+        <ul>
+            <li><strong>El Puente de Cristal:</strong> Cruzar el tablero eligiendo la casilla correcta</li>
+            <li><strong>Carrera de la Serpiente Obstaculizada:</strong> Carrera con obstáculos y penalizaciones</li>
+            <li><strong>El Guardián del Tesoro:</strong> Estrategia para recuperar el tesoro evitando al Guardián</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <h2>Registrar Resultado</h2>
+    
+    <div style="text-align: center; margin: 20px 0;">
+        <h3>{{ partido.equipo1 }} vs {{ partido.equipo2 }}</h3>
+        {% if partido.reto %}
+        <p><strong>Reto:</strong> {{ partido.reto.nombre }}</p>
+        {% endif %}
+        <p><strong>Fase:</strong> {{ partido.get_fase_display }}</p>
+    </div>
+    
+    <form method="post" style="max-width: 400px; margin: 0 auto;">
+        {% csrf_token %}
+        
+        <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 15px; align-items: center; margin: 30px 0;">
+            <div style="text-align: center;">
+                <label style="display: block; margin-bottom: 8px; font-weight: bold;">{{ partido.equipo1 }}</label>
+                <input type="number" name="resultado1" min="0" max="10" required 
+                       style="width: 80px; padding: 10px; text-align: center; border: none; border-radius: 5px; font-size: 1.2em;">
+            </div>
+            
+            <div style="text-align: center; font-size: 2em; font-weight: bold;">VS</div>
+            
+            <div style="text-align: center;">
+                <label style="display: block; margin-bottom: 8px; font-weight: bold;">{{ partido.equipo2 }}</label>
+                <input type="number" name="resultado2" min="0" max="10" required 
+                       style="width: 80px; padding: 10px; text-align: center; border: none; border-radius: 5px; font-size: 1.2em;">
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px;">
+            <button type="submit" style="background: #4ecdc4; color: white; padding: 12px 30px; border: none; border-radius: 6px; font-size: 1.1em; font-weight: bold; cursor: pointer;">
+                Registrar Resultado
+            </button>
+            <a href="{% url 'resultados_sorteo' %}" style="display: inline-block; background: #6c757d; color: white; padding: 12px 30px; border-radius: 6px; text-decoration: none; font-weight: bold; margin-left: 10px;">
+                Cancelar
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}
