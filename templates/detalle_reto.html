@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <div style="text-align: center; margin-bottom: 30px;">
+        <a href="{% url 'index' %}" style="display: inline-block; background: #45b7d1; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; margin-bottom: 20px;">
+            ← Volver al Inicio
+        </a>
+        <h1>{{ titulo }}</h1>
+    </div>
+
+    <!-- Concepto -->
+    <div class="info-section">
+        <h2>🎯 Concepto</h2>
+        <p>{{ concepto }}</p>
+    </div>
+
+    <!-- Preparación -->
+    <div class="info-section">
+        <h2>🛠️ Preparación</h2>
+        <ul>
+            {% for item in preparacion %}
+            <li>{{ item }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Dinámica -->
+    <div class="info-section">
+        <h2>⚡ Dinámica del Juego</h2>
+        <ul>
+            {% for item in dinamica %}
+            <li>{{ item }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Materiales -->
+    <div class="info-section">
+        <h2>📦 Materiales Necesarios</h2>
+        <ul>
+            {% for material in materiales %}
+            <li>{{ material }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Variante -->
+    {% if variante %}
+    <div class="info-section">
+        <h2>💡 Variante Opcional</h2>
+        <p>{{ variante }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Tablero de referencia -->
+    <div class="info-section">
+        <h2>🗺️ Tablero de Referencia (6x6)</h2>
+        <div style="display: inline-block; background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; margin: 15px 0;">
+            <table style="border-collapse: collapse; margin: 0 auto;">
+                {% for row in "123456" %}
+                <tr>
+                    <td style="width: 30px; height: 30px; text-align: center; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); font-weight: bold;">
+                        {{ row }}
+                    </td>
+                    {% for col in "ABCDEF" %}
+                    <td style="width: 40px; height: 40px; text-align: center; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
+                        {{ col }}{{ row }}
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td style="width: 30px; height: 30px;"></td>
+                    {% for col in "ABCDEF" %}
+                    <td style="width: 40px; height: 30px; text-align: center; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); font-weight: bold;">
+                        {{ col }}
+                    </td>
+                    {% endfor %}
+                </tr>
+            </table>
+        </div>
+        <p style="text-align: center; font-style: italic; margin-top: 10px;">
+            Eje Y: 1 (más cercano) al 6 (más lejano) | Eje X: A (izquierda) a la F (derecha)
+        </p>
+    </div>
+
+    <!-- Botón de volver -->
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="{% url 'index' %}" style="display: inline-block; background: #fdbb2d; color: #1a2a6c; padding: 12px 25px; border-radius: 6px; text-decoration: none; font-weight: bold;">
+            Volver al Inicio
+        </a>
+    </div>
+</div>
+
+<style>
+.info-section {
+    background: rgba(255,255,255,0.05);
+    padding: 25px;
+    margin: 20px 0;
+    border-radius: 10px;
+    border-left: 4px solid #fdbb2d;
+}
+
+.info-section h2 {
+    color: #fdbb2d;
+    margin-top: 0;
+    margin-bottom: 15px;
+    border-bottom: 2px solid rgba(253, 187, 45, 0.3);
+    padding-bottom: 8px;
+}
+
+.info-section ul {
+    margin: 10px 0;
+    padding-left: 20px;
+}
+
+.info-section li {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+td {
+    padding: 5px;
+    text-align: center;
+}
+</style>
+{% endblock %}

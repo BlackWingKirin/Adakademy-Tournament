@@ -4,36 +4,60 @@
 {% block content %}
 <div class="card">
     <h2>Bienvenido al Torneo de Robótica</h2>
-    
+    <p>Este sistema gestionará el sorteo de 5 equipos y la asignación de retos para la competencia.</p>
     
     <!-- Video de presentación -->
     <div style="text-align: center; margin: 30px 0;">
         <h3>Video de Presentación del Torneo</h3>
-        <video controls width="30%" height="30%" style="max-width: 800px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
+        <video controls width="40%" height="40%" style="max-width: 800px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
             <source src="{% static 'videos/TorneoRobotica.mp4' %}" type="video/mp4">
+            <source src="{% static 'videos/TorneoRobotica.webm' %}" type="video/webm">
             Tu navegador no soporta el elemento video. Descarga el video 
-            <a href="{% static 'videos/TorneoRobotica.mp4' %}">aquí</a>.
+            <a href="{% static 'videos/torneo_presentacion.mp4' %}">aquí</a>.
         </video>
-        
     </div>
     
     <h3>Los 3 Retos Disponibles:</h3>
     
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-        <div class="card">
-            <h4>🎯 Juego 1: El Puente de Cristal</h4>
-            <p>Los mBots deben cruzar el tablero eligiendo la casilla correcta en cada paso.</p>
-        </div>
+        <!-- Juego 1 - Hacerlo clicable -->
+        <a href="{% url 'reto_puente_cristal' %}" style="text-decoration: none; color: inherit;">
+            <div class="card reto-card">
+                <h4>🎯 Juego 1: El Puente de Cristal</h4>
+                <p>Los mBots deben cruzar el tablero eligiendo la casilla correcta en cada paso.</p>
+                <div style="text-align: center; margin-top: 15px;">
+                    <span style="background: rgba(253, 187, 45, 0.3); padding: 5px 10px; border-radius: 15px; font-size: 0.9em;">
+                        Haz clic para más detalles
+                    </span>
+                </div>
+            </div>
+        </a>
         
-        <div class="card">
-            <h4>🏁 Juego 2: Carrera de la Serpiente Obstaculizada</h4>
-            <p>Carrera de velocidad con obstáculos fijos y penalizaciones por colisión.</p>
-        </div>
+        <!-- Juego 2 - Hacerlo clicable -->
+        <a href="{% url 'reto_serpiente_obstaculizada' %}" style="text-decoration: none; color: inherit;">
+            <div class="card reto-card">
+                <h4>🏁 Juego 2: Carrera de la Serpiente Obstaculizada</h4>
+                <p>Carrera de velocidad con obstáculos fijos y penalizaciones por colisión.</p>
+                <div style="text-align: center; margin-top: 15px;">
+                    <span style="background: rgba(253, 187, 45, 0.3); padding: 5px 10px; border-radius: 15px; font-size: 0.9em;">
+                        Haz clic para más detalles
+                    </span>
+                </div>
+            </div>
+        </a>
         
-        <div class="card">
-            <h4>💎 Juego 3: El Guardián del Tesoro</h4>
-            <p>Estrategia y precisión para recuperar el tesoro evitando al Guardián.</p>
-        </div>
+        <!-- Juego 3 - Hacerlo clicable -->
+        <a href="{% url 'reto_guardian_tesoro' %}" style="text-decoration: none; color: inherit;">
+            <div class="card reto-card">
+                <h4>💎 Juego 3: El Guardián del Tesoro</h4>
+                <p>Estrategia y precisión para recuperar el tesoro evitando al Guardián.</p>
+                <div style="text-align: center; margin-top: 15px;">
+                    <span style="background: rgba(253, 187, 45, 0.3); padding: 5px 10px; border-radius: 15px; font-size: 0.9em;">
+                        Haz clic para más detalles
+                    </span>
+                </div>
+            </div>
+        </a>
     </div>
     
     <div style="text-align: center; margin-top: 30px;">
@@ -46,4 +70,19 @@
         <p><small>Ejecutar solo una vez al iniciar la aplicación</small></p>
     </div>
 </div>
+
+<style>
+.reto-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    height: 100%;
+}
+
+.reto-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255,255,255,0.1);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    border: 1px solid rgba(253, 187, 45, 0.3);
+}
+</style>
 {% endblock %}

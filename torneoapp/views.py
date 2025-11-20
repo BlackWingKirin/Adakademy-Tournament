@@ -259,6 +259,89 @@ def ruleta(request, partido_id):
     }
     return render(request, 'ruleta.html', context)
 
+def reto_puente_cristal(request):
+    """Vista para mostrar los detalles del Juego 1"""
+    context = {
+        'titulo': 'Juego 1: El Puente de Cristal',
+        'concepto': 'Una versión robótica del juego clásico. Los mBots deben cruzar el tablero eligiendo la casilla correcta en cada paso, o "caerán al vacío".',
+        'preparacion': [
+            'Se define una ruta secreta de 6 casillas para cruzar el tablero. Por ejemplo: A1 (inicio) -> B2 -> C2 -> D3 -> E4 -> F5 (final).',
+            'Las casillas que NO son parte de la ruta son "cristales falsos". Al pisarlas, el mBot es eliminado.',
+            'En la práctica, se marca la casilla con un código de colores o un número que el juez verifique.'
+        ],
+        'dinamica': [
+            'Programación: Los equipos programan su mBot por tiempos para intentar seguir la ruta correcta. No pueden usar sensores, solo movimientos predefinidos.',
+            'Ejecución: Los dos mBots compiten simultáneamente en pistas paralelas.',
+            'Victoria: El primer mBot que llegue a la casilla final (ej: F5) GANA. Si un mBot pisa una casilla incorrecta, queda ELIMINADO instantáneamente. Si ambos fallan, gana el que más lejos haya llegado.'
+        ],
+        'variante': 'Coloca un folio de papel delgado o un plástico frágil sobre las casillas falsas. Si el mBot pasa por encima y lo rompe, ¡es una caída dramática!',
+        'materiales': [
+            '1 mBot por equipo',
+            '1 Computador con Make Code para programar (con bloqueo de internet durante las pruebas)',
+            'Conocimiento de la duración de sus movimientos (ej: "avanzar por 1 segundo" = X cm)',
+            'Tablero 6x6 con casillas marcadas con cinta'
+        ]
+    }
+    return render(request, 'detalle_reto.html', context)
+
+def reto_serpiente_obstaculizada(request):
+    """Vista para mostrar los detalles del Juego 2"""
+    context = {
+        'titulo': 'Juego 2: Carrera de la Serpiente Obstaculizada',
+        'concepto': 'Una carrera de velocidad con obstáculos fijos. El que termine primero gana, pero chocar con un obstáculo conlleva una penalización severa.',
+        'preparacion': [
+            'Se establece un recorrido con curvas y tal vez un túnel (hecho con una caja) que todos los mBots deben seguir.',
+            'Ejemplo de recorrido: Inicio en A6 -> Derecho hasta F6 -> Giro -> Hasta F1 -> Giro -> Hasta A1 (Meta).',
+            'Se colocan obstáculos fijos (como vasos de plástico o conos pequeños) en puntos clave del recorrido.'
+        ],
+        'dinamica': [
+            'Programación: Los equipos programan su mBot para completar el circuito lo más rápido posible, evitando los obstáculos mediante giros precisos.',
+            'Uso de Sensores (Opcional): Puedes permitir el uso del sensor ultrasónico para "detectar" y esquivar obstáculos de forma autónoma, lo que añade una capa de complejidad.',
+            'Ejecución: Carrera simultánea en pistas idénticas.',
+            'Penalización: Cada vez que un mBot derriba un obstáculo, recibe una penalización de +5 segundos a su tiempo final.',
+            'Victoria: El mBot con el tiempo real + penalizaciones más bajo gana la ronda.'
+        ],
+        'variante': 'Para mayor dificultad, se pueden agregar más obstáculos o reducir el ancho del camino.',
+        'materiales': [
+            '1 mBot por equipo',
+            '1 Computador con Make Code para programar',
+            'Obstáculos: vasos de plástico, conos pequeños o cajas para túnel',
+            'Tablero 6x6 con recorrido marcado',
+            'Cronómetro para medir tiempos'
+        ]
+    }
+    return render(request, 'detalle_reto.html', context)
+
+def reto_guardian_tesoro(request):
+    """Vista para mostrar los detalles del Juego 3"""
+    context = {
+        'titulo': 'Juego 3: El Guardián del Tesoro',
+        'concepto': 'Un juego de estrategia y precisión. Deben alcanzar un objeto (el "tesoro") en el centro del tablero mientras evitan zonas de peligro controladas por un "Guardián" (un mBot controlado por el juez).',
+        'preparacion': [
+            'El "Tesoro" (un cubo pequeño u objeto) se coloca en la casilla central, por ejemplo, en D3.',
+            'Se definen 2 o 3 "zonas de peligro" (ej: la fila 2 y la columna E).',
+            'Si el mBot del competidor entra en ellas, el "Guardián" (otro mBot) lo perseguirá para sacarlo.',
+            'Cada mBot competidor parte desde una esquina diferente (ej: Equipo 1 desde A1, Equipo 2 desde F6).'
+        ],
+        'dinamica': [
+            'Programación: Los equipos programan su mBot para ir a recoger el tesoro y volver a su base, evitando las zonas de peligro.',
+            'El Guardián: Es un mBot controlado de forma remota por el juez o con una programación simple que patrulla las zonas de peligro.',
+            'Si un mBot competidor entra en una zona de peligro, el Guardián se activa y se dirige hacia él.',
+            'Si el Guardián toca al mBot competidor, este queda ELIMINADO.',
+            'Estrategia: Los equipos deben decidir si arriesgarse por la ruta más corta (pasando por una zona de peligro) o tomar una ruta más larga pero segura.',
+            'Victoria: El primer mBot que logre llevar el tesoro de vuelta a su casilla de inicio GANA.'
+        ],
+        'variante': 'Se puede aumentar la dificultad agregando más zonas de peligro o haciendo que el Guardián sea más rápido.',
+        'materiales': [
+            '1 mBot por equipo competidor',
+            '1 mBot adicional para el Guardián (controlado por el juez)',
+            '1 Computador con Make Code para programar',
+            'Tesoro: cubo pequeño u objeto visible',
+            'Tablero 6x6 con zonas de peligro marcadas'
+        ]
+    }
+    return render(request, 'detalle_reto.html', context)
+
 
 def cargar_datos_iniciales(request):
     # Crear retos si no existen
