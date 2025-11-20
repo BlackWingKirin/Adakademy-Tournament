@@ -6,32 +6,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>El Juego de Adakademy - Torneo de Robótica</title>
     {% load static %}
-  <style>
+ <style>
+        :root {
+            --azul-oscuro: #0a1f3a;
+            --azul-medio: #1e3c72;
+            --azul-claro: #2a5298;
+            --azul-cielo: #4a76b0;
+            --verde-manzana: #7cff79;
+            --verde-intenso: #50e34c;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #0a1f3a, #1e3c72, #2a5298, #4a76b0);
+            background: linear-gradient(135deg, var(--azul-oscuro), var(--azul-medio), var(--azul-claro), var(--azul-cielo));
             color: white;
             min-height: 100vh;
+            line-height: 1.6;
         }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 15px;
+            width: 100%;
         }
+
+        /* Header Responsive */
         header {
             text-align: center;
-            padding: 40px 0;
+            padding: 30px 20px;
             background: linear-gradient(135deg, rgba(30, 60, 114, 0.9), rgba(42, 82, 152, 0.9));
             border-radius: 15px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             position: relative;
             overflow: hidden;
         }
+
         header::before {
             content: '';
             position: absolute;
@@ -39,25 +60,30 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, #7cff79, #50e34c, #7cff79);
+            background: linear-gradient(90deg, var(--verde-manzana), var(--verde-intenso), var(--verde-manzana));
             box-shadow: 0 0 10px rgba(124, 255, 121, 0.5);
         }
+
         .logo {
-            max-width: 280px;
+            max-width: min(280px, 80%);
             height: auto;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
         }
+
+        /* Navegación Responsive */
         nav {
             display: flex;
             justify-content: center;
-            gap: 25px;
-            margin: 30px 0;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
         }
+
         nav a {
             color: white;
             text-decoration: none;
-            padding: 15px 30px;
+            padding: 12px 20px;
             border: 2px solid rgba(124, 255, 121, 0.3);
             border-radius: 8px;
             transition: all 0.3s ease;
@@ -66,7 +92,12 @@
             backdrop-filter: blur(10px);
             position: relative;
             overflow: hidden;
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+            font-size: 0.9em;
         }
+
         nav a::before {
             content: '';
             position: absolute;
@@ -77,26 +108,31 @@
             background: linear-gradient(90deg, transparent, rgba(124, 255, 121, 0.2), transparent);
             transition: left 0.5s ease;
         }
+
         nav a:hover::before {
             left: 100%;
         }
+
         nav a:hover {
             background: linear-gradient(135deg, rgba(30, 60, 114, 0.9), rgba(42, 82, 152, 0.9));
-            border-color: #7cff79;
+            border-color: var(--verde-manzana);
             transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(124, 255, 121, 0.3);
         }
+
+        /* Cards Responsive */
         .card {
             background: linear-gradient(135deg, rgba(30, 60, 114, 0.85), rgba(42, 82, 152, 0.85));
             border-radius: 12px;
-            padding: 30px;
-            margin: 25px 0;
+            padding: 25px 20px;
+            margin: 20px 0;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
             border: 1px solid rgba(124, 255, 121, 0.2);
             backdrop-filter: blur(10px);
             position: relative;
             overflow: hidden;
         }
+
         .card::before {
             content: '';
             position: absolute;
@@ -104,13 +140,15 @@
             left: 0;
             width: 4px;
             height: 100%;
-            background: linear-gradient(180deg, #7cff79, #50e34c);
+            background: linear-gradient(180deg, var(--verde-manzana), var(--verde-intenso));
         }
+
+        /* Botones Responsive */
         button {
-            background: linear-gradient(135deg, #4a76b0, #2a5298);
+            background: linear-gradient(135deg, var(--azul-cielo), var(--azul-claro));
             color: white;
             border: none;
-            padding: 15px 30px;
+            padding: 14px 25px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
@@ -118,7 +156,11 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             position: relative;
             overflow: hidden;
+            width: 100%;
+            max-width: 300px;
+            font-size: 1em;
         }
+
         button::after {
             content: '';
             position: absolute;
@@ -130,22 +172,36 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
+
         button:hover::after {
             opacity: 1;
         }
+
         button:hover {
             background: linear-gradient(135deg, #5a86c0, #3a62a8);
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(124, 255, 121, 0.2);
         }
+
+        /* Tipografía Responsive */
         h1, h2, h3, h4, h5, h6 {
             color: white;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            line-height: 1.3;
         }
+
+        h1 {
+            font-size: clamp(1.8em, 5vw, 2.5em);
+            margin-bottom: 10px;
+        }
+
         h2 {
+            font-size: clamp(1.5em, 4vw, 2em);
             position: relative;
             display: inline-block;
+            margin-bottom: 15px;
         }
+
         h2::after {
             content: '';
             position: absolute;
@@ -153,19 +209,22 @@
             left: 0;
             width: 50px;
             height: 2px;
-            background: linear-gradient(90deg, #7cff79, #50e34c);
+            background: linear-gradient(90deg, var(--verde-manzana), var(--verde-intenso));
         }
+
         p {
             color: rgba(255, 255, 255, 0.9);
             line-height: 1.6;
-            font-size: 1.1em;
+            font-size: clamp(0.9em, 3vw, 1.1em);
         }
+
         header p {
-            font-size: 1.2em;
+            font-size: clamp(1em, 3.5vw, 1.2em);
             margin-top: 10px;
             color: rgba(255, 255, 255, 0.95);
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
+
         /* Efectos de partículas verdes sutiles */
         .container::before {
             content: '';
@@ -180,6 +239,142 @@
                 radial-gradient(circle at 40% 40%, rgba(124, 255, 121, 0.08) 0%, transparent 50%);
             pointer-events: none;
             z-index: -1;
+        }
+
+        /* Media Queries para diferentes tamaños de pantalla */
+        
+        /* Tablets */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            header {
+                padding: 25px 15px;
+                margin-bottom: 20px;
+            }
+            
+            nav {
+                gap: 10px;
+                margin: 20px 0;
+            }
+            
+            nav a {
+                padding: 10px 15px;
+                min-width: 100px;
+                font-size: 0.85em;
+            }
+            
+            .card {
+                padding: 20px 15px;
+                margin: 15px 0;
+            }
+            
+            button {
+                padding: 12px 20px;
+                font-size: 0.95em;
+            }
+        }
+
+        /* Móviles */
+        @media (max-width: 480px) {
+            .container {
+                padding: 8px;
+            }
+            
+            header {
+                padding: 20px 10px;
+                border-radius: 10px;
+                margin-bottom: 15px;
+            }
+            
+            .logo {
+                max-width: 70%;
+                margin-bottom: 10px;
+            }
+            
+            nav {
+                flex-direction: column;
+                gap: 8px;
+                margin: 15px 0;
+            }
+            
+            nav a {
+                padding: 12px 15px;
+                min-width: auto;
+                width: 100%;
+                font-size: 0.9em;
+            }
+            
+            .card {
+                padding: 15px 12px;
+                margin: 12px 0;
+                border-radius: 10px;
+            }
+            
+            button {
+                padding: 14px 20px;
+                font-size: 0.9em;
+                max-width: none;
+            }
+            
+            h1 {
+                font-size: 1.6em;
+            }
+            
+            h2 {
+                font-size: 1.3em;
+            }
+        }
+
+        /* Pantallas muy pequeñas */
+        @media (max-width: 320px) {
+            .container {
+                padding: 5px;
+            }
+            
+            header {
+                padding: 15px 8px;
+            }
+            
+            .logo {
+                max-width: 60%;
+            }
+            
+            nav a {
+                padding: 10px 12px;
+                font-size: 0.8em;
+            }
+            
+            .card {
+                padding: 12px 10px;
+            }
+        }
+
+        /* Pantallas grandes */
+        @media (min-width: 1200px) {
+            .container {
+                padding: 25px;
+            }
+            
+            header {
+                padding: 50px 40px;
+            }
+        }
+
+        /* Utilidades responsive */
+        .mobile-only {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-only {
+                display: block;
+            }
+            
+            .desktop-only {
+                display: none;
+            }
         }
     </style>
 </head>
